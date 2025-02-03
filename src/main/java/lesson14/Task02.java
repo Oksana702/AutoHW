@@ -10,8 +10,9 @@ public class Task02 {
         WebDriver driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.get("http://www.automationpractice.pl/index.php");
-        System.out.println("Your logo");
-        System.out.println("http://www.automationpractice.pl/index.php");
+        System.out.println("Page title: " + driver.getTitle());
+        System.out.println("Page URL: " + driver.getCurrentUrl());
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++");
 
     }
 }
