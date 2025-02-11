@@ -34,5 +34,6 @@ public class TestLoginMaxLength {
         } finally {
             driver.quit();
         }
+        // Just some comments
     }
 }
