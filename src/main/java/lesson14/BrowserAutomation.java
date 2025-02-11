@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BrowserAutomation {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         WebDriverManager.chromedriver().setup();
         WebDriver driver = new ChromeDriver();
         driver.manage().window().maximize();
