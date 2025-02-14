@@ -1,6 +1,6 @@
 package lesson16.priority;
 
-import jdk.incubator.vector.VectorOperators;
+import org.testng.annotations.Test;
 
 public class Priority1 {
     @Test(priority=7)
