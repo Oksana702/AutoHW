@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Parameterized Test Suite">
+
+    <test name="First Test">
+        <parameter name="username" value="user1"/>
+        <parameter name="password" value="password1"/>
+        <classes>
+            <class name="lesson16.task5.LoginTest"/>
+        </classes>
+    </test>
+
+    <test name="Second Test">
+        <parameter name="username" value="user2"/>
+        <parameter name="password" value="password2"/>
+        <classes>
+            <class name="lesson16.task5.LoginTest"/>
+        </classes>
+    </test>
+
+    <test name="Third Test">
+        <parameter name="username" value="user3"/>
+        <parameter name="password" value="password3"/>
+        <classes>
+            <class name="lesson16.task5.LoginTest"/>
+        </classes>
+    </test>
+
+</suite>
