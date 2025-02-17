@@ -1,4 +1,4 @@
-package constants.url;
+package utils.driver.constants;
 
 public enum URL {
     GUINNESS("https://www.guinnessworldrecords.com/records/"),
