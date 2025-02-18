@@ -1,5 +1,6 @@
 package lesson_17;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -23,22 +24,27 @@ public class SelectTest {
 
     @BeforeClass
     public void setUp() {
-        System.setProperty("webdriver.chrome.driver", "path/to/chromedriver");
-        driver = new ChromeDriver();
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverManager.chromedriver().setup();
+        WebDriver driver = new ChromeDriver();
         driver.manage().window().maximize();
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         driver.get("https://qa-course-01.andersenlab.com/");
+        WebElement emailInput = driver.findElement(By.xpath("//input[@type='email']"));
+        WebElement passwordInput = driver.findElement(By.xpath("//input[@type='password']"));
+        WebElement loginButton = driver.findElement(By.xpath("//button[@type='submit']"));
+
+        emailInput.sendKeys("mail@mail.by");
+        passwordInput.sendKeys("qwerty12");
+        loginButton.click();
     }
 
     @Test
     public void testCourseSearch() {
         // 1. Нажимаем "AQA Practice"
-        WebElement aqaPracticeBtn = driver.findElement(By.xpath("//input[@name='AQA Practice']")); // Пример ID
-        aqaPracticeBtn.click();
+        driver.findElement(By.xpath("//input[@name='AQA Practice']")).click();
 
         // 2. Нажимаем на "Select"
-        WebElement selectDropdown = driver.findElement(By.xpath("//input[//div[normalize-space()='Select']")); // Пример ID
-        selectDropdown.click();
+        driver.findElement(By.xpath("//input[//div[normalize-space()='Select']")).click();
 
         // 3. Выбираем "Country -> USA"
         Select countrySelect = new Select(driver.findElement(By.xpath("//select[@title='Select country']")));
@@ -65,23 +71,21 @@ public class SelectTest {
         // 8. "Last date" -> через 2 недели после Start Date
         LocalDate lastDate = nextMonday.plusWeeks(2);
         String lastDateFormatted = lastDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        WebElement lastDateInput = driver.findElement(By.xpath("//input[@name='start-date']"));
+        WebElement lastDateInput = driver.findElement(By.xpath("//input[@title='End date']"));
         lastDateInput.sendKeys(lastDateFormatted);
 
         // 9. Выбираем "AQA Java" и "AQA Python"
-        List<WebElement> checkboxes = new Select(driver.findElement(By.xpath("//input[@title='End date']")));
-        for (WebElement checkbox : checkboxes) {
-            String label = checkbox.getText();
-            if (label.equals("AQA Java") || label.equals("AQA Python")) {
-                if (!checkbox.isSelected()) {
-                    checkbox.click();
-                }
-            }
-        }
+        WebElement coursesDropdown = driver.findElement(By.xpath("//select[@title='Select courses']"));
+
+        // Создаём объект Select
+        Select select = new Select(coursesDropdown);
+
+        // Выбираем курсы по ID (если поддерживается) или по тексту
+        select.selectByVisibleText("AQA Java");  // Выбор по тексту
+        select.selectByVisibleText("AQA Python");
 
         // 10. Нажимаем на кнопку "Search"
-        Select searchButton = new Select(driver.findElement(By.xpath("//button[@name='SelectPageSearchButton']")));
-        searchButton.click();
+        driver.findElement(By.xpath("//button[@name='SelectPageSearchButton']")).click();
 
         // 11. Проверяем, что появилось сообщение "Unfortunately, we did not find any courses..."
         WebElement resultMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("no-results-msg"))); // Пример ID
