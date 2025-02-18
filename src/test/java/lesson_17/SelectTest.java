@@ -1,6 +1,5 @@
 package lesson_17;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -24,18 +23,11 @@ public class SelectTest {
 
     @BeforeClass
     public void setUp() {
-        WebDriverManager.chromedriver().setup();
-        WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
+        System.setProperty("webdriver.chrome.driver", "path/to/chromedriver");
+        driver = new ChromeDriver();
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        driver.manage().window().maximize();
         driver.get("https://qa-course-01.andersenlab.com/");
-        WebElement emailInput = driver.findElement(By.xpath("//input[@type='email']"));
-        WebElement passwordInput = driver.findElement(By.xpath("//input[@type='password']"));
-        WebElement loginButton = driver.findElement(By.xpath("//button[@type='submit']"));
-
-        emailInput.sendKeys("mail@mail.by");
-        passwordInput.sendKeys("qwerty12");
-        loginButton.click();
     }
 
     @Test
@@ -75,17 +67,15 @@ public class SelectTest {
         lastDateInput.sendKeys(lastDateFormatted);
 
         // 9. Выбираем "AQA Java" и "AQA Python"
-        WebElement coursesDropdown = driver.findElement(By.xpath("//select[@title='Select courses']"));
+        Select courses = new Select(driver.findElement(By.id("courses")));
+        courses.selectByVisibleText("AQA Java");
+        courses.selectByVisibleText("AQA Python");
 
-        // Создаём объект Select
-        Select select = new Select(coursesDropdown);
-
-        // Выбираем курсы по ID (если поддерживается) или по тексту
-        select.selectByVisibleText("AQA Java");  // Выбор по тексту
-        select.selectByVisibleText("AQA Python");
+        // 8️⃣ Нажимаем "Search"
+        driver.findElement(By.id("search-button")).click();
 
         // 10. Нажимаем на кнопку "Search"
-        driver.findElement(By.xpath("//button[@name='SelectPageSearchButton']")).click();
+        driver.findElement(By.id("search-button")).click();
 
         // 11. Проверяем, что появилось сообщение "Unfortunately, we did not find any courses..."
         WebElement resultMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("no-results-msg"))); // Пример ID
