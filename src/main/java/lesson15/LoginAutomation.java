@@ -1,4 +1,4 @@
-package lesson14;
+package lesson15;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
