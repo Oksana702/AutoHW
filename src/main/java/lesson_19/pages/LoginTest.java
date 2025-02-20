@@ -1,6 +1,6 @@
-package pages;
+package lesson_19.pages;
 
-
+import lesson_19.pages.LoginTest;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
